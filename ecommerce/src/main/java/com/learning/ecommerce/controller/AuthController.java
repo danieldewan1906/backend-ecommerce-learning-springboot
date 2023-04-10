@@ -23,6 +23,8 @@ import com.learning.ecommerce.security.service.UserDetailsImpl;
 import com.learning.ecommerce.security.service.UserDetailsServiceImpl;
 import com.learning.ecommerce.service.UsersService;
 
+
+
 @RestController
 @RequestMapping("/auth")
 public class AuthController {
@@ -44,7 +46,8 @@ public class AuthController {
 
     @PostMapping("/signin")
     public ResponseEntity<JwtResponse> authenticateUser(@RequestBody LoginRequest request){
-        Authentication authentication =  authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword()));
+        UsernamePasswordAuthenticationToken loginUser = new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword());
+        Authentication authentication =  authenticationManager.authenticate(loginUser);
         SecurityContextHolder.getContext().setAuthentication(authentication);
         String token = jwtUtils.generateJwtToken(authentication);
         String refreshToken = jwtUtils.generateRefreshJwtToken(authentication);
