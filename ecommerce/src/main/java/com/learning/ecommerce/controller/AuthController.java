@@ -49,10 +49,10 @@ public class AuthController {
         UsernamePasswordAuthenticationToken loginUser = new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword());
         Authentication authentication =  authenticationManager.authenticate(loginUser);
         SecurityContextHolder.getContext().setAuthentication(authentication);
-        String token = jwtUtils.generateJwtToken(authentication);
+        String tokens = jwtUtils.generateJwtToken(authentication);
         String refreshToken = jwtUtils.generateRefreshJwtToken(authentication);
         UserDetailsImpl principal = (UserDetailsImpl) authentication.getPrincipal();
-        return ResponseEntity.ok().body(new JwtResponse(token, refreshToken, principal.getUsername(), principal.getEmail(), principal.getRoles()));
+        return ResponseEntity.ok().body(new JwtResponse(tokens, refreshToken, principal.getUsername(), principal.getEmail(), principal.getRoles()));
     }
 
     @PostMapping("/signup")
